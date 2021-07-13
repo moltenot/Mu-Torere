@@ -9,10 +9,10 @@ import MuTorere.Player;
   * Sam Fern
   * Theo Molteno
   */
-  class CoolCustomPlayer893 : Player{
+  class CustomPlayer extends Player{
     
     /**Constructor - creates a new custom player in the same way the original Player class does.*/
-    public CoolCustomPlayer893(BoardReader boardReader, Board.Piece playerID){
+    public CustomPlayer(BoardReader boardReader, Board.Piece playerID){
       super(boardReader, playerID);
     }
     
@@ -24,6 +24,6 @@ import MuTorere.Player;
      If there are no valid moves, just return something - don't leave us hanging!
      */
     public int getMove(){
-      
+        return -1;
     }
   }
