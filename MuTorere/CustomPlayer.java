@@ -1,7 +1,5 @@
 package MuTorere;
 
-import MuTorere.Player;
-
 /**Our implementation of the Player abstract class.
   * COSC326 Etude 1
   * Daniel Blaikie
@@ -24,6 +22,6 @@ import MuTorere.Player;
      If there are no valid moves, just return something - don't leave us hanging!
      */
     public int getMove(){
-        return -1;
+        return 2147483647;
     }
   }

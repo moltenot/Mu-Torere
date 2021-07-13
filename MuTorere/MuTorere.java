@@ -129,4 +129,4 @@ class MuTorere {
 		System.out.println("That was fun!");
 	}
 	
-};
+}
