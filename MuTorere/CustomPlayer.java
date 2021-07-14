@@ -10,7 +10,7 @@ package MuTorere;
   class CustomPlayer extends Player{
     
     //ARRAY of board pieces, array index 8 is always the centre peice.
-    private Board.Piece boardArray[] = new Board.Piece[9];
+    private Board.Piece[] boardArray = new Board.Piece[9];
 
 
     /**Constructor - creates a new custom player in the same way the original Player class does.*/
@@ -31,6 +31,9 @@ package MuTorere;
     
     private void rotateBoardArray(int numPlaces){
 
+      for(int i = 0; i < boardArray.length - 1; i++){
+        
+      }
     }
 
     private void loadBoardArray(){
