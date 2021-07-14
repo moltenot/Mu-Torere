@@ -33,12 +33,56 @@ import java.util.ArrayList;
      */
     public int getMove(){
       loadBoardArray();
-
-      //Figure out how much we need to rotate
-      int blankLocation = boardReader.board.blankLocation;
-      
+      normaliseBoard();
 
       return 2147483647;
+    }
+
+    private void normaliseBoard(){
+      //Figure out how much we need to rotate
+      int blankLocation = boardReader.board.blankLocation;
+      if(blankLocation == 8){
+        //Get longest streak in the right spot
+        //Make COG positive
+        //Rotate by longest streak length - 1
+      }else{
+        rotateBoardArray(blankLocation);
+        //If the board is oriented towards the wrong side, flip it.
+        if(getCentreOfGravity() < 0){
+          flipBoardArray();
+        }
+      }
+    }
+
+    /**Gets the current board's centre of gravity.*/
+    private int getCentreOfGravity(){
+      int cog = 0; 
+      for(int i = 0; i < numKawai; i++){
+        //Update the centre if the player is on the current piece
+        if(boardArray[i] == playerID){
+          cog += getCogWeight(i);
+        }
+      }
+      return cog;
+    }
+
+    private int getCogWeight(int i){
+      int multiplier;
+      if(i < numKawai / 2){
+        multiplier = 1;
+      }else{
+        multiplier = -1;
+        i -= numKawai / 2;
+      }
+      int base;
+      if(i == 0){
+        base = 0;
+      }else if(i == numKawai / 4){
+        base = 3;
+      }else{
+        base = 2;
+      }
+      return base * multiplier;
     }
     
     private void rotateBoardArray(int numPlaces){
@@ -53,8 +97,8 @@ import java.util.ArrayList;
     }
 
     private void flipBoardArray(){
-      for(int i = 0; i < numKawai / 2; i++){
-        swapArrayPositions(i, numKawai - i - 1);
+      for(int i = 1; i < numKawai / 2; i++){
+        swapArrayPositions(i, numKawai - i);
       }
       //Add 0 for a "flip" transformation
       previousTransformations.add(Integer.valueOf(0));
