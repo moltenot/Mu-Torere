@@ -1,4 +1,5 @@
 package MuTorere;
+import java.util.ArrayList;
 
 /**Our implementation of the Player abstract class.
   * COSC326 Etude 1
@@ -26,8 +27,28 @@ package MuTorere;
      If there are no valid moves, just return something - don't leave us hanging!
      */
     public int getMove(){
-        return 2147483647;
+      ArrayList<Integer> validMoves = new ArrayList<Integer>();
+      for (int i = 0; i < 9; ++i) {
+        for (int j = 0; j < 9; ++j) {
+          if (isValid(i,j)) {
+            validMoves.add(i);
+            continue;
+          }
+        }
+      }
+      if (validMoves.isEmpty()) {
+        return 0;
+      } else if (validMoves.size() == 1){
+        return validMoves.get(0);
+      }
+
+    /* Currently just does first possible move */
+    return validMoves.get(0);
     }
+
+    
+    
+
     
     private void rotateBoardArray(int numPlaces){
 
@@ -37,7 +58,7 @@ package MuTorere;
     }
 
     private void loadBoardArray(){
-        if(BoardReader != null){
+        if(boardReader != null){
           for(int i = 0; i < boardArray.length; i ++){
               boardArray[i] = boardReader.pieceAt(i); 
           }
