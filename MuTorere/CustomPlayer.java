@@ -43,7 +43,7 @@ package MuTorere;
 
     private void flipBoardArray(){
       for(int i = 0; i < numKawai / 2; i++){
-        
+        swapArrayPositions(i, numKawai - i - 1);
       }
     }
 
