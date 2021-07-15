@@ -1,7 +1,6 @@
 package MuTorere;
 import java.util.ArrayList;
-
-import java.util.ArrayList;
+import java.util.Random;
 
 /**Our implementation of the Player abstract class.
   * COSC326 Etude 1
@@ -16,6 +15,7 @@ import java.util.ArrayList;
     private Board.Piece[] boardArray;
     private int numKawai;
     private ArrayList<Integer> previousTransformations;
+    private Random rng;
 
     /**Constructor - creates a new custom player in the same way the original Player class does.*/
     public CustomPlayer(BoardReader boardReader, Board.Piece playerID){
@@ -23,6 +23,7 @@ import java.util.ArrayList;
       boardArray  = new Board.Piece[9];
       numKawai = boardArray.length - 1;
       previousTransformations = new ArrayList<Integer>();
+      rng = new Random();
     }
 
     public char getSymbol(Board board, int index) {
@@ -79,7 +80,7 @@ import java.util.ArrayList;
       System.out.println();
 
 
-      return 2147483647;
+      return validMoves.get(rng.nextInt(validMoves.size()));
 
     }
 
