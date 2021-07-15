@@ -24,8 +24,29 @@ import java.util.ArrayList;
       numKawai = boardArray.length - 1;
       previousTransformations = new ArrayList<Integer>();
     }
-    
-    
+
+    public char getSymbol(Board board, int index) {
+      if (boardArray[index] == Board.Piece.ONE) {
+        return '1';
+      } else if (boardArray[index] == Board.Piece.TWO) {
+        return '2';
+      } else {
+        return '_';
+      }
+    }    
+    public void printBoard(Board board) {
+      String row1 = "  " + getSymbol(board, 7) + "   " + getSymbol(board, 0); 
+      String row2 = "" + getSymbol(board, 6) + "       " + getSymbol(board, 1);
+      String row3 = "    " + getSymbol(board, 8);
+      String row4 = "" + getSymbol(board, 5) + "       " + getSymbol(board, 2);
+      String row5 = "  " + getSymbol(board, 4) + "   " + getSymbol(board, 3); 
+      System.out.println(row1);
+      System.out.println(row2);
+      System.out.println(row3);
+      System.out.println(row4);
+      System.out.println(row5);
+    }
+  
     /*
      Need to implement this.
      Return the index of the piece that you want to move.
@@ -33,6 +54,12 @@ import java.util.ArrayList;
      If there are no valid moves, just return something - don't leave us hanging!
      */
     public int getMove(){
+
+      System.out.println();
+      System.out.println("before board abstraction");
+      printBoard(super.boardReader.board);
+      System.out.println();
+
       ArrayList<Integer> validMoves = new ArrayList<Integer>();
       for (int i = 0; i < 9; ++i) {
         for (int j = 0; j < 9; ++j) {
@@ -50,6 +77,12 @@ import java.util.ArrayList;
 
       loadBoardArray();
       normaliseBoard();
+
+      System.out.println();
+      System.out.println("after normalising");
+      printBoard(super.boardReader.board);
+      System.out.println();
+
 
       return 2147483647;
 
