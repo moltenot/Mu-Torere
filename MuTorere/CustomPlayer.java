@@ -43,8 +43,15 @@ import java.util.ArrayList;
       int blankLocation = boardReader.board.blankLocation;
       if(blankLocation == 8){
         //Get longest streak in the right spot
+        int[] arr = longestStreakPosLength();
+        int pos = arr[0], length = arr[1];
+        rotateBoardArray(pos);
         //Make COG positive
+        if(getCentreOfGravity() < 0){
+          flipBoardArray();
+        }
         //Rotate by longest streak length - 1
+        rotateBoardArray(length - 1);
       }else{
         rotateBoardArray(blankLocation);
         //If the board is oriented towards the wrong side, flip it.
@@ -52,6 +59,37 @@ import java.util.ArrayList;
           flipBoardArray();
         }
       }
+    }
+
+    private int[] longestStreakPosLength(){
+      int firstStreak = 0, longestStreak = 0, currentStreak = 0,
+      longestStreakPos = -1, currentStreakStart = 0;
+      for(int i = 0; i < numKawai; i++){
+        if(boardArray[i] == playerID){
+          //Continue current streak
+          currentStreak++;
+        }else{
+          //End current streak
+          if(longestStreak == 0){
+            firstStreak = currentStreak;
+          }
+          if(currentStreak > longestStreak){
+            longestStreak = currentStreak;
+            longestStreakPos = currentStreakStart;
+          }
+          currentStreak = 0;
+          //Start next streak
+          currentStreakStart = i + 1;
+        }
+      }
+      if(currentStreak > 0){
+        //If we've still got a streak going on, go back to the start of the board.
+        currentStreak += firstStreak;
+      }
+      if(currentStreak > longestStreak){
+        return new int[] {currentStreakStart, currentStreak};
+      }
+      return new int[] {longestStreakPos, longestStreak};
     }
 
     /**Gets the current board's centre of gravity.*/
