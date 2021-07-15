@@ -1,7 +1,6 @@
 package MuTorere;
 import java.util.ArrayList;
-
-import java.util.ArrayList;
+import java.util.HashMap;
 
 /**Our implementation of the Player abstract class.
   * COSC326 Etude 1
@@ -16,6 +15,9 @@ import java.util.ArrayList;
     private Board.Piece[] boardArray;
     private int numKawai;
     private ArrayList<Integer> previousTransformations;
+
+    private HashMap<Board.Piece[], Integer> moveMap = new HashMap<>();
+
 
     /**Constructor - creates a new custom player in the same way the original Player class does.*/
     public CustomPlayer(BoardReader boardReader, Board.Piece playerID){
