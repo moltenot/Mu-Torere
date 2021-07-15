@@ -1,6 +1,8 @@
 package MuTorere;
 import java.util.ArrayList;
 
+import java.util.ArrayList;
+
 /**Our implementation of the Player abstract class.
   * COSC326 Etude 1
   * Daniel Blaikie
@@ -10,13 +12,17 @@ import java.util.ArrayList;
   */
   class CustomPlayer extends Player{
     
-    //ARRAY of board pieces, array index 8 is always the centre peice.
-    private Board.Piece[] boardArray = new Board.Piece[9];
-
+    //ARRAY of board pieces, array index 8 is always the centre piece.
+    private Board.Piece[] boardArray;
+    private int numKawai;
+    private ArrayList<Integer> previousTransformations;
 
     /**Constructor - creates a new custom player in the same way the original Player class does.*/
     public CustomPlayer(BoardReader boardReader, Board.Piece playerID){
       super(boardReader, playerID);
+      boardArray  = new Board.Piece[9];
+      numKawai = boardArray.length - 1;
+      previousTransformations = new ArrayList<Integer>();
     }
     
     
@@ -42,8 +48,96 @@ import java.util.ArrayList;
         return validMoves.get(0);
       }
 
-    /* Currently just does first possible move */
-    return validMoves.get(0);
+      loadBoardArray();
+      normaliseBoard();
+
+      return 2147483647;
+
+    }
+
+    private void normaliseBoard(){
+      //Figure out how much we need to rotate
+      int blankLocation = boardReader.board.blankLocation;
+      if(blankLocation == 8){
+        //Get longest streak in the right spot
+        int[] arr = longestStreakPosLength();
+        int pos = arr[0], length = arr[1];
+        rotateBoardArray(pos);
+        //Make COG positive
+        if(getCentreOfGravity() < 0){
+          flipBoardArray();
+        }
+        //Rotate by longest streak length - 1
+        rotateBoardArray(length - 1);
+      }else{
+        rotateBoardArray(blankLocation);
+        //If the board is oriented towards the wrong side, flip it.
+        if(getCentreOfGravity() < 0){
+          flipBoardArray();
+        }
+      }
+    }
+
+    private int[] longestStreakPosLength(){
+      int firstStreak = 0, longestStreak = 0, currentStreak = 0,
+      longestStreakPos = -1, currentStreakStart = 0;
+      for(int i = 0; i < numKawai; i++){
+        if(boardArray[i] == playerID){
+          //Continue current streak
+          currentStreak++;
+        }else{
+          //End current streak
+          if(longestStreak == 0){
+            firstStreak = currentStreak;
+          }
+          if(currentStreak > longestStreak){
+            longestStreak = currentStreak;
+            longestStreakPos = currentStreakStart;
+          }
+          currentStreak = 0;
+          //Start next streak
+          currentStreakStart = i + 1;
+        }
+      }
+      if(currentStreak > 0){
+        //If we've still got a streak going on, go back to the start of the board.
+        currentStreak += firstStreak;
+      }
+      if(currentStreak > longestStreak){
+        return new int[] {currentStreakStart, currentStreak};
+      }
+      return new int[] {longestStreakPos, longestStreak};
+    }
+
+    /**Gets the current board's centre of gravity.*/
+    private int getCentreOfGravity(){
+      int cog = 0; 
+      for(int i = 0; i < numKawai; i++){
+        //Update the centre if the player is on the current piece
+        if(boardArray[i] == playerID){
+          cog += getCogWeight(i);
+        }
+      }
+      return cog;
+    }
+
+    private int getCogWeight(int i){
+      int multiplier;
+      if(i < numKawai / 2){
+        multiplier = 1;
+      }else{
+        multiplier = -1;
+        i -= numKawai / 2;
+      }
+      int base;
+      if(i == 0){
+        base = 0;
+      }else if(i == numKawai / 4){
+        base = 3;
+      }else{
+        base = 2;
+      }
+      return base * multiplier;
     }
 
     
@@ -51,13 +145,33 @@ import java.util.ArrayList;
 
     
     private void rotateBoardArray(int numPlaces){
+      if(numPlaces == 0){return;}
+      Board.Piece[] boardArrayClone = boardArray.clone();
 
-      for(int i = 0; i < boardArray.length - 1; i++){
-        
+      for(int i = 0; i < numKawai; i++){
+        boardArray[i] = boardArrayClone[(i + numPlaces) % numKawai];
       }
+      //Add "rotate n places" transformation
+      previousTransformations.add(Integer.valueOf(numPlaces));
+    }
+
+    private void flipBoardArray(){
+      for(int i = 1; i < numKawai / 2; i++){
+        swapArrayPositions(i, numKawai - i);
+      }
+      //Add 0 for a "flip" transformation
+      previousTransformations.add(Integer.valueOf(0));
+    }
+
+    private void swapArrayPositions(int i, int j){
+      Board.Piece temp = boardArray[i];
+      boardArray[i] = boardArray[j];
+      boardArray[j] = temp;
     }
 
     private void loadBoardArray(){
+      previousTransformations.clear();
+
         if(boardReader != null){
           for(int i = 0; i < boardArray.length; i ++){
               boardArray[i] = boardReader.pieceAt(i); 
