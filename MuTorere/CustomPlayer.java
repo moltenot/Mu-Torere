@@ -55,11 +55,6 @@ import java.util.ArrayList;
      */
     public int getMove(){
 
-      System.out.println();
-      System.out.println("before board abstraction");
-      printBoard(super.boardReader.board);
-      System.out.println();
-
       ArrayList<Integer> validMoves = new ArrayList<Integer>();
       for (int i = 0; i < 9; ++i) {
         for (int j = 0; j < 9; ++j) {
@@ -95,13 +90,16 @@ import java.util.ArrayList;
         //Get longest streak in the right spot
         int[] arr = longestStreakPosLength();
         int pos = arr[0], length = arr[1];
+        System.out.println("position of streak" + pos + " length " + length);
+
         rotateBoardArray(pos);
         //Make COG positive
         if(getCentreOfGravity() < 0){
+          System.out.println("centre of grav on the wrong side");
           flipBoardArray();
+          //Rotate by longest streak length - 1
+          rotateBoardArray(length - 1);
         }
-        //Rotate by longest streak length - 1
-        rotateBoardArray(length - 1);
       }else{
         rotateBoardArray(blankLocation);
         //If the board is oriented towards the wrong side, flip it.
