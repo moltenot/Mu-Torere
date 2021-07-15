@@ -51,8 +51,30 @@ import java.util.ArrayList;
       loadBoardArray();
       normaliseBoard();
 
-      return 2147483647;
+      int move = getNormalisedMove();
+      //Ignore the following if we're moving the centre piece
+      if(move != numKawai){
+        /*Iterate back through the previous transformations
+        and apply them in reverse to the move*/
+        int transformation;
+        for(int i = previousTransformations.size() - 1; i >= 0; i--){
+          transformation = previousTransformations.get(i).intValue();
+          if(transformation == 0){
+            //Undo the flip
+            move = numKawai - move;
+          }else{
+            //Undo the rotation
+            move = (move + transformation) % numKawai;
+          }
+        }
+      }
 
+      return move;
+
+    }
+
+    private int getNormalisedMove(){
+      return 0;
     }
 
     private void normaliseBoard(){
