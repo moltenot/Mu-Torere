@@ -25,6 +25,7 @@ import java.util.HashMap;
       boardArray  = new Board.Piece[9];
       numKawai = boardArray.length - 1;
       previousTransformations = new ArrayList<Integer>();
+      loadHashMap();
     }
     
     
@@ -240,3 +241,30 @@ import java.util.HashMap;
       return true;
     }
   }
+
+
+  private void loadHashMap(){
+    Board.Piece friendly, enemy, blank;
+    friendly = playerID;
+    blank = Board.Piece.BLANK;
+    if(friendly == Board.Piece.ONE){
+        enemy = Board.Piece.TWO;
+    } else{enemy = Board.Piece.ONE;}
+
+    //0 through 7 is clockwise around circle, 8 is centre
+    //Winning move: move 1 -> 0
+    moveMap.put(new Board.Piece[]{blank, friendly,friendly,enemy,enemy,friendly,enemy,enemy,friendly}, 0);
+    //Winning move: move 1 -> 0
+    moveMap.put(new Board.Piece[]{blank, friendly,friendly,enemy,enemy,enemy,friendly,enemy,friendly}, 0);
+    //Winning move: move 1 -> 0
+    moveMap.put(new Board.Piece[]{blank, friendly,friendly,enemy,friendly,enemy,enemy,enemy,friendly}, 0);
+    //Winning move: move 1 -> 0
+    moveMap.put(new Board.Piece[]{blank, friendly,friendly,friendly,enemy,enemy,enemy,enemy,friendly}, 0);
+    //Non-Losing Move:
+    moveMap.put(new Board.Piece[]{blank, friendly,enemy,friendly,friendly,enemy,enemy,friendly,enemy}, 0);
+    //Non-Losing Move:
+    moveMap.put(new Board.Piece[]{blank, friendly,friendly,friendly,enemy,enemy,enemy,friendly,enemy}, 0);
+    //Non-Losing Move:
+    moveMap.put(new Board.Piece[]{blank, friendly,friendly,enemy,friendly,enemy,enemy,friendly,enemy}, 0);
+  }
+}
