@@ -1,6 +1,7 @@
 package MuTorere;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 /**Our implementation of the Player abstract class.
@@ -46,6 +47,19 @@ import java.util.Random;
       String row3 = "    " + getSymbol(board, 8);
       String row4 = "" + getSymbol(board, 5) + "       " + getSymbol(board, 2);
       String row5 = "  " + getSymbol(board, 4) + "   " + getSymbol(board, 3); 
+      System.out.println(row1);
+      System.out.println(row2);
+      System.out.println(row3);
+      System.out.println(row4);
+      System.out.println(row5);
+    }
+    
+    public void printBoard(Board.Piece[] board) {
+      String row1 = "  " + board[7] + "   " + board[0]; 
+      String row2 = "" + board[6] + "       " + board[1];
+      String row3 = "    " + board[8];
+      String row4 = "" + board[5] + "       " + board[2];
+      String row5 = "  " + board[4] + "   " + board[3]; 
       System.out.println(row1);
       System.out.println(row2);
       System.out.println(row3);
@@ -117,16 +131,55 @@ import java.util.Random;
     }
 
     private int getNormalisedMove(ArrayList<Integer> validMoves){
+      Board.Piece friendly, enemy, blank;
+      friendly = playerID;
+      blank = Board.Piece.BLANK;
+      if(friendly == Board.Piece.ONE){
+          enemy = Board.Piece.TWO;
+      } else{enemy = Board.Piece.ONE;}
+  
+      Board.Piece[] testboard=new Board.Piece[]{blank, friendly,friendly,enemy,enemy,friendly,enemy,enemy,friendly};
+      printBoard(testboard);
+
+      System.out.println("x");
+      System.out.println(testMap(testboard));
+      System.out.println("x");
 
       int move;
-      if (moveMap.containsKey(boardArray)) {
+      if (moveMap.containsKey(testboard)) {
         System.out.println("we have the move in our movemap");
-        move = moveMap.get(boardArray);
+        move = moveMap.get(testboard);
       } else {
         System.out.println("we move randomly");
         move = getRandomMove(validMoves);
       }
-      return 0;
+      return move;
+    }
+
+    private int testMap(Board.Piece[] board) {
+      /**
+       * Check if out moveMap contains an entry for the given board, returns -1 if we can't find the move
+       * and the move if we do have it.
+       */
+      for (Map.Entry<Board.Piece[], Integer> entry : moveMap.entrySet()) {
+        Board.Piece[] key = entry.getKey();
+        Integer move = entry.getValue();
+
+        // test if board == key
+        boolean isSame=true; // and set false when a piece is different
+        for (int i =0; i<=numKawai; i++) {
+          Board.Piece mapPiece = key[i]; // piece in the map
+          Board.Piece boardPiece = board[i]; // piece in board
+          if (mapPiece != boardPiece) {
+            isSame=false;
+            break;
+          }
+        }
+        if (isSame) {
+          return move;
+        }
+      }
+      return -1;
     }
 
     private void normaliseBoard(){
