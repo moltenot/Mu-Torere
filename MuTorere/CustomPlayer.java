@@ -79,9 +79,24 @@ import java.util.Random;
       loadBoardArray();
       normaliseBoard();
 
-      int move = getNormalisedMove();
+      int move = getNormalisedMove(validMoves);
 
-      // move abstraction
+      move = abstractMove(move);
+
+      // testing and printing the board
+      System.out.println();
+      System.out.println("after normalising");
+      printBoard(super.boardReader.board);
+      System.out.println();
+
+      return move;
+    }
+
+    int getRandomMove(ArrayList<Integer> validMoves) {
+      return validMoves.get(rng.nextInt(validMoves.size()));
+    }
+
+    int abstractMove(int move) {
       //Ignore the following if we're moving the centre piece
       if(move != numKawai){
         /*Iterate back through the previous transformations
@@ -98,18 +113,19 @@ import java.util.Random;
           }
         }
       }
-
-      // testing and printing the board
-      System.out.println();
-      System.out.println("after normalising");
-      printBoard(super.boardReader.board);
-      System.out.println();
-
-
-      return validMoves.get(rng.nextInt(validMoves.size()));
+      return move;
     }
 
-    private int getNormalisedMove(){
+    private int getNormalisedMove(ArrayList<Integer> validMoves){
+
+      int move;
+      if (moveMap.containsKey(boardArray)) {
+        System.out.println("we have the move in our movemap");
+        move = moveMap.get(boardArray);
+      } else {
+        System.out.println("we move randomly");
+        move = getRandomMove(validMoves);
+      }
       return 0;
     }
 
