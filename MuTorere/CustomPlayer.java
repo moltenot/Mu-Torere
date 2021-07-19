@@ -79,10 +79,10 @@ import java.util.Random;
 
       int move = testMap(boardArray);
       if (move==-1) {
-        System.out.println("moving randomly");
+        System.out.println("("+playerID+") moving randomly");
         move = getRandomMove();
       } else {
-        System.out.println("moving deliberatly");
+        System.out.println("("+playerID+") moving deliberatly");
         move = abstractMove(move);
       }
 
