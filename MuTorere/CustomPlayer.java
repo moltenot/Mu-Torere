@@ -74,39 +74,34 @@ import java.util.Random;
      If there are no valid moves, just return something - don't leave us hanging!
      */
     public int getMove(){
-
-      ArrayList<Integer> validMoves = new ArrayList<Integer>();
-      for (int i = 0; i < 9; ++i) {
-        for (int j = 0; j < 9; ++j) {
-          if (isValid(i,j)) {
-            validMoves.add(i);
-            continue;
-          }
-        }
-      }
-      if (validMoves.isEmpty()) {
-        return 0;
-      } else if (validMoves.size() == 1){
-        return validMoves.get(0);
-      }
-
       loadBoardArray();
       normaliseBoard();
 
-      int move = getNormalisedMove(validMoves);
-
-      move = abstractMove(move);
-
-      // testing and printing the board
-      System.out.println();
-      System.out.println("after normalising");
-      printBoard(super.boardReader.board);
-      System.out.println();
+      int move = testMap(boardArray);
+      if (move==-1) {
+        move = getRandomMove();
+      } else {
+        move = abstractMove(move);
+      }
 
       return move;
     }
 
-    int getRandomMove(ArrayList<Integer> validMoves) {
+    int getRandomMove() {
+      ArrayList<Integer> validMoves = new ArrayList<Integer>();
+        for (int i = 0; i < 9; ++i) {
+          for (int j = 0; j < 9; ++j) {
+            if (isValid(i,j)) {
+              validMoves.add(i);
+              continue;
+            }
+          }
+        }
+        if (validMoves.isEmpty()) {
+          return 0;
+        } else if (validMoves.size() == 1){
+          return validMoves.get(0);
+        }
       return validMoves.get(rng.nextInt(validMoves.size()));
     }
 
@@ -130,26 +125,6 @@ import java.util.Random;
       return move;
     }
 
-    private int getNormalisedMove(ArrayList<Integer> validMoves){
-      // Board.Piece friendly, enemy, blank;
-      // friendly = playerID;
-      // blank = Board.Piece.BLANK;
-      // if(friendly == Board.Piece.ONE){
-      //     enemy = Board.Piece.TWO;
-      // } else{enemy = Board.Piece.ONE;}
-  
-      // Board.Piece[] testboard=new Board.Piece[]{blank, friendly,friendly,enemy,enemy,friendly,enemy,enemy,friendly};
-      // printBoard(testboard);
-      
-      int move = testMap(boardArray);
-      if (move == -1) {
-        System.out.println("we move randomly");
-        move = getRandomMove(validMoves);
-      } else {
-        System.out.println("we have the move in our movemap");
-      }
-      return move;
-    }
 
     private int testMap(Board.Piece[] board) {
       /**
