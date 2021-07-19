@@ -1,6 +1,7 @@
 package MuTorere;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 /**Our implementation of the Player abstract class.
   * COSC326 Etude 1
@@ -15,6 +16,7 @@ import java.util.HashMap;
     private Board.Piece[] boardArray;
     private int numKawai;
     private ArrayList<Integer> previousTransformations;
+    private Random rng;
 
     private HashMap<Board.Piece[], Integer> moveMap = new HashMap<>();
 
@@ -26,9 +28,31 @@ import java.util.HashMap;
       numKawai = boardArray.length - 1;
       previousTransformations = new ArrayList<Integer>();
       loadHashMap();
+      rng = new Random();
     }
-    
-    
+
+    public char getSymbol(Board board, int index) {
+      if (boardArray[index] == Board.Piece.ONE) {
+        return '1';
+      } else if (boardArray[index] == Board.Piece.TWO) {
+        return '2';
+      } else {
+        return '_';
+      }
+    }    
+    public void printBoard(Board board) {
+      String row1 = "  " + getSymbol(board, 7) + "   " + getSymbol(board, 0); 
+      String row2 = "" + getSymbol(board, 6) + "       " + getSymbol(board, 1);
+      String row3 = "    " + getSymbol(board, 8);
+      String row4 = "" + getSymbol(board, 5) + "       " + getSymbol(board, 2);
+      String row5 = "  " + getSymbol(board, 4) + "   " + getSymbol(board, 3); 
+      System.out.println(row1);
+      System.out.println(row2);
+      System.out.println(row3);
+      System.out.println(row4);
+      System.out.println(row5);
+    }
+  
     /*
      Need to implement this.
      Return the index of the piece that you want to move.
@@ -36,6 +60,7 @@ import java.util.HashMap;
      If there are no valid moves, just return something - don't leave us hanging!
      */
     public int getMove(){
+
       ArrayList<Integer> validMoves = new ArrayList<Integer>();
       for (int i = 0; i < 9; ++i) {
         for (int j = 0; j < 9; ++j) {
@@ -55,6 +80,8 @@ import java.util.HashMap;
       normaliseBoard();
 
       int move = getNormalisedMove();
+
+      // move abstraction
       //Ignore the following if we're moving the centre piece
       if(move != numKawai){
         /*Iterate back through the previous transformations
@@ -72,8 +99,14 @@ import java.util.HashMap;
         }
       }
 
-      return move;
+      // testing and printing the board
+      System.out.println();
+      System.out.println("after normalising");
+      printBoard(super.boardReader.board);
+      System.out.println();
 
+
+      return validMoves.get(rng.nextInt(validMoves.size()));
     }
 
     private int getNormalisedMove(){
@@ -87,13 +120,16 @@ import java.util.HashMap;
         //Get longest streak in the right spot
         int[] arr = longestStreakPosLength();
         int pos = arr[0], length = arr[1];
+        System.out.println("position of streak" + pos + " length " + length);
+
         rotateBoardArray(pos);
         //Make COG positive
         if(getCentreOfGravity() < 0){
+          System.out.println("centre of grav on the wrong side");
           flipBoardArray();
+          //Rotate by longest streak length - 1
+          rotateBoardArray(length - 1);
         }
-        //Rotate by longest streak length - 1
-        rotateBoardArray(length - 1);
       }else{
         rotateBoardArray(blankLocation);
         //If the board is oriented towards the wrong side, flip it.

@@ -2,6 +2,7 @@ package MuTorere;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.ArrayList;
 
 class NaivePlayer extends Player {
 	
