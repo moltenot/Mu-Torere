@@ -131,27 +131,22 @@ import java.util.Random;
     }
 
     private int getNormalisedMove(ArrayList<Integer> validMoves){
-      Board.Piece friendly, enemy, blank;
-      friendly = playerID;
-      blank = Board.Piece.BLANK;
-      if(friendly == Board.Piece.ONE){
-          enemy = Board.Piece.TWO;
-      } else{enemy = Board.Piece.ONE;}
+      // Board.Piece friendly, enemy, blank;
+      // friendly = playerID;
+      // blank = Board.Piece.BLANK;
+      // if(friendly == Board.Piece.ONE){
+      //     enemy = Board.Piece.TWO;
+      // } else{enemy = Board.Piece.ONE;}
   
-      Board.Piece[] testboard=new Board.Piece[]{blank, friendly,friendly,enemy,enemy,friendly,enemy,enemy,friendly};
-      printBoard(testboard);
-
-      System.out.println("x");
-      System.out.println(testMap(testboard));
-      System.out.println("x");
-
-      int move;
-      if (moveMap.containsKey(testboard)) {
-        System.out.println("we have the move in our movemap");
-        move = moveMap.get(testboard);
-      } else {
+      // Board.Piece[] testboard=new Board.Piece[]{blank, friendly,friendly,enemy,enemy,friendly,enemy,enemy,friendly};
+      // printBoard(testboard);
+      
+      int move = testMap(boardArray);
+      if (move == -1) {
         System.out.println("we move randomly");
         move = getRandomMove(validMoves);
+      } else {
+        System.out.println("we have the move in our movemap");
       }
       return move;
     }
