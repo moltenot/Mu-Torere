@@ -85,6 +85,9 @@ import java.util.Random;
         System.out.println("("+playerID+") moving deliberatly");
         move = abstractMove(move);
       }
+      System.out.println("normalised board ---");
+      printBoard(super.boardReader.board);
+      System.out.println("---------------- ---");
 
       return move;
     }
@@ -342,5 +345,7 @@ import java.util.Random;
     moveMap.put(new Board.Piece[]{blank, friendly,friendly,friendly,enemy,enemy,enemy,friendly,enemy}, 1);
     //Non-Losing Move:
     moveMap.put(new Board.Piece[]{blank, friendly,friendly,enemy,friendly,enemy,enemy,friendly,enemy}, 1);
+
+    moveMap.put(new Board.Piece[] {blank,friendly,friendly,enemy,enemy,friendly,enemy,friendly,enemy}, 1);
   }
 }
