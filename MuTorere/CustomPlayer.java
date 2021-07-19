@@ -79,8 +79,10 @@ import java.util.Random;
 
       int move = testMap(boardArray);
       if (move==-1) {
+        System.out.println("moving randomly");
         move = getRandomMove();
       } else {
+        System.out.println("moving deliberatly");
         move = abstractMove(move);
       }
 
@@ -327,18 +329,18 @@ import java.util.Random;
 
     //0 through 7 is clockwise around circle, 8 is centre
     //Winning move: move 1 -> 0
-    moveMap.put(new Board.Piece[]{blank, friendly,friendly,enemy,enemy,friendly,enemy,enemy,friendly}, 0);
+    moveMap.put(new Board.Piece[]{blank, friendly,friendly,enemy,enemy,friendly,enemy,enemy,friendly}, 1);
     //Winning move: move 1 -> 0
-    moveMap.put(new Board.Piece[]{blank, friendly,friendly,enemy,enemy,enemy,friendly,enemy,friendly}, 0);
+    moveMap.put(new Board.Piece[]{blank, friendly,friendly,enemy,enemy,enemy,friendly,enemy,friendly}, 1);
     //Winning move: move 1 -> 0
-    moveMap.put(new Board.Piece[]{blank, friendly,friendly,enemy,friendly,enemy,enemy,enemy,friendly}, 0);
+    moveMap.put(new Board.Piece[]{blank, friendly,friendly,enemy,friendly,enemy,enemy,enemy,friendly}, 1);
     //Winning move: move 1 -> 0
-    moveMap.put(new Board.Piece[]{blank, friendly,friendly,friendly,enemy,enemy,enemy,enemy,friendly}, 0);
+    moveMap.put(new Board.Piece[]{blank, friendly,friendly,friendly,enemy,enemy,enemy,enemy,friendly}, 1);
     //Non-Losing Move:
-    moveMap.put(new Board.Piece[]{blank, friendly,enemy,friendly,friendly,enemy,enemy,friendly,enemy}, 0);
+    moveMap.put(new Board.Piece[]{blank, friendly,enemy,friendly,friendly,enemy,enemy,friendly,enemy}, 1);
     //Non-Losing Move:
-    moveMap.put(new Board.Piece[]{blank, friendly,friendly,friendly,enemy,enemy,enemy,friendly,enemy}, 0);
+    moveMap.put(new Board.Piece[]{blank, friendly,friendly,friendly,enemy,enemy,enemy,friendly,enemy}, 1);
     //Non-Losing Move:
-    moveMap.put(new Board.Piece[]{blank, friendly,friendly,enemy,friendly,enemy,enemy,friendly,enemy}, 0);
+    moveMap.put(new Board.Piece[]{blank, friendly,friendly,enemy,friendly,enemy,enemy,friendly,enemy}, 1);
   }
 }
