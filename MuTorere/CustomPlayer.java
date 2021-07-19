@@ -240,7 +240,6 @@ import java.util.HashMap;
       }
       return true;
     }
-  }
 
 
   private void loadHashMap(){
