@@ -18,7 +18,7 @@ import java.util.Random;
     private int numKawai;
     private ArrayList<Integer> previousTransformations;
     private Random rng;
-    boolean verbose; // set to true if we want to print abstracted board and if we moved randomly
+    static boolean verbose = false; // set to true if we want to print abstracted board and if we moved randomly
 
     private HashMap<Board.Piece[], Integer> moveMap = new HashMap<>();
 
@@ -26,7 +26,6 @@ import java.util.Random;
     /**Constructor - creates a new custom player in the same way the original Player class does.*/
     public CustomPlayer(BoardReader boardReader, Board.Piece playerID){
       super(boardReader, playerID);
-      verbose = true;
       boardArray  = new Board.Piece[9];
       numKawai = boardArray.length - 1;
       previousTransformations = new ArrayList<Integer>();
