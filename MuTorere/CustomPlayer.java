@@ -7,8 +7,8 @@ import java.util.Random;
 /**Our implementation of the Player abstract class.
   * COSC326 Etude 1
   * Daniel Blaikie    7708554
-  * Blake MacDade
-  * Sam Fern
+  * Blake MacDade     8548310
+  * Sam Fern          8555433
   * Theo Molteno      7615853
   */
   class CustomPlayer extends Player{
