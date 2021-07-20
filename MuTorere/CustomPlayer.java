@@ -9,7 +9,7 @@ import java.util.Random;
   * Daniel Blaikie
   * Blake MacDade
   * Sam Fern
-  * Theo Molteno
+  * Theo Molteno      7615853
   */
   class CustomPlayer extends Player{
     
@@ -18,6 +18,7 @@ import java.util.Random;
     private int numKawai;
     private ArrayList<Integer> previousTransformations;
     private Random rng;
+    boolean verbose; // set to true if we want to print abstracted board and if we moved randomly
 
     private HashMap<Board.Piece[], Integer> moveMap = new HashMap<>();
 
@@ -25,6 +26,7 @@ import java.util.Random;
     /**Constructor - creates a new custom player in the same way the original Player class does.*/
     public CustomPlayer(BoardReader boardReader, Board.Piece playerID){
       super(boardReader, playerID);
+      verbose = true;
       boardArray  = new Board.Piece[9];
       numKawai = boardArray.length - 1;
       previousTransformations = new ArrayList<Integer>();
@@ -32,16 +34,17 @@ import java.util.Random;
       rng = new Random();
     }
 
-    public char getSymbol(Board board, int index) {
-      if (boardArray[index] == Board.Piece.ONE) {
+    public char getSymbol(Board.Piece[] board, int index) {
+      if (board[index] == Board.Piece.ONE) {
         return '1';
       } else if (boardArray[index] == Board.Piece.TWO) {
         return '2';
       } else {
         return '_';
       }
-    }    
-    public void printBoard(Board board) {
+    }
+
+    public void printBoard(Board.Piece[] board) {
       String row1 = "  " + getSymbol(board, 7) + "   " + getSymbol(board, 0); 
       String row2 = "" + getSymbol(board, 6) + "       " + getSymbol(board, 1);
       String row3 = "    " + getSymbol(board, 8);
@@ -54,19 +57,6 @@ import java.util.Random;
       System.out.println(row5);
     }
     
-    public void printBoard(Board.Piece[] board) {
-      String row1 = "  " + board[7] + "   " + board[0]; 
-      String row2 = "" + board[6] + "       " + board[1];
-      String row3 = "    " + board[8];
-      String row4 = "" + board[5] + "       " + board[2];
-      String row5 = "  " + board[4] + "   " + board[3]; 
-      System.out.println(row1);
-      System.out.println(row2);
-      System.out.println(row3);
-      System.out.println(row4);
-      System.out.println(row5);
-    }
-  
     /*
      Need to implement this.
      Return the index of the piece that you want to move.
@@ -79,15 +69,23 @@ import java.util.Random;
 
       int move = testMap(boardArray);
       if (move==-1) {
-        System.out.println("("+playerID+") moving randomly");
+        if(verbose) {
+          System.out.println("("+playerID+") moving randomly");
+        }
         move = getRandomMove();
       } else {
-        System.out.println("("+playerID+") moving deliberatly");
+        if (verbose) {
+          System.out.println("("+playerID+") moving deliberatly");
+        }
         move = abstractMove(move);
       }
-      System.out.println("normalised board ---");
-      printBoard(super.boardReader.board);
-      System.out.println("---------------- ---");
+      System.out.println(super.boardReader.board.getClass());
+
+      if (verbose){
+        System.out.println("normalised board ---");
+        printBoard(boardArray);
+        System.out.println("---------------- ---");
+      }
 
       return move;
     }
@@ -164,12 +162,10 @@ import java.util.Random;
         //Get longest streak in the right spot
         int[] arr = longestStreakPosLength();
         int pos = arr[0], length = arr[1];
-        System.out.println("position of streak" + pos + " length " + length);
 
         rotateBoardArray(pos);
         //Make COG positive
         if(getCentreOfGravity() < 0){
-          System.out.println("centre of grav on the wrong side");
           flipBoardArray();
           //Rotate by longest streak length - 1
           rotateBoardArray(length - 1);
