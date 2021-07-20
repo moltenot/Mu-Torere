@@ -34,6 +34,13 @@ import java.util.Random;
       rng = new Random();
     }
 
+    /**
+     * Returns the symbol to print based on the type of Board.Piece required
+     * 
+     * @param board the board containing the symbol
+     * @param index the index of the symbol in the board we want to print
+     * @return the correct symbol
+     */
     public char getSymbol(Board.Piece[] board, int index) {
       if (board[index] == Board.Piece.ONE) {
         return '1';
@@ -44,6 +51,11 @@ import java.util.Random;
       }
     }
 
+    /**
+     * Prints a Board.Piece array nicely
+     * 
+     * @param board the board to print
+     */
     public void printBoard(Board.Piece[] board) {
       String row1 = "  " + getSymbol(board, 7) + "   " + getSymbol(board, 0); 
       String row2 = "" + getSymbol(board, 6) + "       " + getSymbol(board, 1);
@@ -57,11 +69,13 @@ import java.util.Random;
       System.out.println(row5);
     }
     
-    /*
-     Need to implement this.
-     Return the index of the piece that you want to move.
-     If the result is not a valid move, you lose.
-     If there are no valid moves, just return something - don't leave us hanging!
+    /**
+     * Returns a move based on the current board. We do this with the following steps
+     * 1. normalise the board so mirroring and rotation are not considered
+     * 2. see if we know what to do with that board position by checking our LUT of 
+     *    board position -> move
+     * 3. if we have it we return that move (abstracted back to the real board)
+     * 4. if we don't we move randomly
      */
     public int getMove(){
       loadBoardArray();
@@ -90,6 +104,11 @@ import java.util.Random;
       return move;
     }
 
+    /**
+     * Finds all of the valid moves given a senario and returns on of them
+     * 
+     * @return integer move 
+     */
     int getRandomMove() {
       ArrayList<Integer> validMoves = new ArrayList<Integer>();
         for (int i = 0; i < 9; ++i) {
@@ -108,6 +127,13 @@ import java.util.Random;
       return validMoves.get(rng.nextInt(validMoves.size()));
     }
 
+    /**
+     * Using the list of transforms created by normalising the board, transform
+     * a move back to the original board position.
+     * 
+     * @param move what move we made on the normalised board
+     * @return a move to return to the game
+     */
     int abstractMove(int move) {
       //Ignore the following if we're moving the centre piece
       if(move != numKawai){
@@ -128,12 +154,14 @@ import java.util.Random;
       return move;
     }
 
-
+    /**
+     * Check if out moveMap contains an entry for the given board, returns -1 if we can't find the move
+     * and the move if we do have it.
+     * 
+     * @param board is the board to look up in the LUT
+     * @return the move in the LUT, or -1 if the board wasn't present in out LUT
+     */
     private int testMap(Board.Piece[] board) {
-      /**
-       * Check if out moveMap contains an entry for the given board, returns -1 if we can't find the move
-       * and the move if we do have it.
-       */
       for (Map.Entry<Board.Piece[], Integer> entry : moveMap.entrySet()) {
         Board.Piece[] key = entry.getKey();
         Integer move = entry.getValue();
@@ -155,6 +183,9 @@ import java.util.Random;
       return -1;
     }
 
+    /**
+     * 
+     */
     private void normaliseBoard(){
       //Figure out how much we need to rotate
       int blankLocation = boardReader.board.blankLocation;
