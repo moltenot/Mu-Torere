@@ -6,7 +6,7 @@ import java.util.Random;
 
 /**Our implementation of the Player abstract class.
   * COSC326 Etude 1
-  * Daniel Blaikie
+  * Daniel Blaikie    7708554
   * Blake MacDade
   * Sam Fern
   * Theo Molteno      7615853
@@ -184,7 +184,10 @@ import java.util.Random;
     }
 
     /**
-     * 
+     * If the hole is on the edge, move it to index 0 and make sure our centre of gravity
+     * is positive. If the hole is in the middle, move the longest streak to 0 and make 
+     * sure the COG is positive. We record the transformations in 
+     * this.previousTransformations.
      */
     private void normaliseBoard(){
       //Figure out how much we need to rotate
@@ -210,6 +213,11 @@ import java.util.Random;
       }
     }
 
+    /**
+     * Helper method for normaliseing the board
+     * 
+     * @return int array of [longest streak position, longest streak]
+     */
     private int[] longestStreakPosLength(){
       int firstStreak = 0, longestStreak = 0, currentStreak = 0,
       longestStreakPos = -1, currentStreakStart = 0;
@@ -253,6 +261,12 @@ import java.util.Random;
       return cog;
     }
 
+    /**
+     * Return the weight of a putahi given it's index in the board 
+     * 
+     * @param i the index of the putahi
+     * @return the weight of that putahi
+     */
     private int getCogWeight(int i){
       int multiplier;
       if(i < numKawai / 2){
@@ -272,10 +286,11 @@ import java.util.Random;
       return base * multiplier;
     }
 
-    
-    
-
-    
+    /**
+     * rotate this.boardArray by a certain number of places
+     * 
+     * @param numPlaces the number of places to rotate by
+     */
     private void rotateBoardArray(int numPlaces){
       if(numPlaces == 0){return;}
       Board.Piece[] boardArrayClone = boardArray.clone();
@@ -287,6 +302,9 @@ import java.util.Random;
       previousTransformations.add(Integer.valueOf(numPlaces));
     }
 
+    /**
+     * Mirror this.boardArray along the axis throught index 0 and 4
+     */
     private void flipBoardArray(){
       for(int i = 1; i < numKawai / 2; i++){
         swapArrayPositions(i, numKawai - i);
@@ -295,12 +313,18 @@ import java.util.Random;
       previousTransformations.add(Integer.valueOf(0));
     }
 
+    /**
+     * Helper swap method for board indicies
+     */
     private void swapArrayPositions(int i, int j){
       Board.Piece temp = boardArray[i];
       boardArray[i] = boardArray[j];
       boardArray[j] = temp;
     }
 
+    /**
+     * loads the board array from the boardReader
+     */
     private void loadBoardArray(){
       previousTransformations.clear();
 
@@ -348,7 +372,11 @@ import java.util.Random;
       return true;
     }
 
-
+  
+    /**
+     * Hard code board positions and where to move from given that board position.
+     * This information is put into this.moveMap
+     */
   private void loadHashMap(){
     Board.Piece friendly, enemy, blank;
     friendly = playerID;
